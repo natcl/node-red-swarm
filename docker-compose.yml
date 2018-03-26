@@ -20,7 +20,8 @@ services:
     deploy:
       mode: replicated
       replicas: 6
-      restart_policy: none
+      restart_policy:
+        condition: none
 
   mosquitto:
     image: ansi/mosquitto
