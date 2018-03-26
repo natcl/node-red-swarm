@@ -168,7 +168,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "<ul>\n{{#flow.instances}}\n  <img src=\"data:image/png;base64, {{path}}\" />\n{{/flow.instances}}\n</ul>\n      ",
+        "template": "{{#flow.instances}}\n  <img src=\"data:image/png;base64, {{path}}\" />\n{{/flow.instances}}\n      ",
         "output": "str",
         "x": 350,
         "y": 220,
@@ -241,7 +241,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "$each(payload, function($v, $k) {{\"path\": $v}})",
+                "to": "$each(payload, function($v, $k) {{\"path\": $v, \"hostname\": $k}})",
                 "tot": "jsonata"
             }
         ],
@@ -342,5 +342,52 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "fa2a3af5.df9318",
+        "type": "template",
+        "z": "525869ac.9121e",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<ul>\n{{#flow.instances}}\n  <li>{{hostname}}</li>\n{{/flow.instances}}\n</ul>\n      ",
+        "output": "str",
+        "x": 350,
+        "y": 280,
+        "wires": [
+            [
+                "92c85c53.000238"
+            ]
+        ]
+    },
+    {
+        "id": "1bcb377b.b1e5d1",
+        "type": "http in",
+        "z": "525869ac.9121e",
+        "name": "",
+        "url": "/hostnames",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 280,
+        "wires": [
+            [
+                "fa2a3af5.df9318"
+            ]
+        ]
+    },
+    {
+        "id": "92c85c53.000238",
+        "type": "http response",
+        "z": "525869ac.9121e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 470,
+        "y": 280,
+        "wires": []
     }
 ]
