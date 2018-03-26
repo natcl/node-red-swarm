@@ -81,7 +81,7 @@
         "y": 120,
         "wires": [
             [
-                "d08b17fd.8d556"
+                "ddfba632.207e58"
             ]
         ]
     },
@@ -94,7 +94,7 @@
         "qos": "",
         "retain": "",
         "broker": "ba3ba5c7.caf388",
-        "x": 850,
+        "x": 1010,
         "y": 120,
         "wires": []
     },
@@ -135,7 +135,7 @@
         "ret": "bin",
         "url": "http://thecatapi.com/api/images/get?format=src&type=gif",
         "tls": "",
-        "x": 450,
+        "x": 610,
         "y": 120,
         "wires": [
             [
@@ -151,7 +151,7 @@
         "func": "msg.payload = msg.payload.toString('base64');\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
-        "x": 610,
+        "x": 770,
         "y": 120,
         "wires": [
             [
@@ -168,7 +168,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "<ul>\n{{#flow.instances}}\n  <li>{{path}}</li>\n  <img src=\"data:image/png;base64, {{path}}\" />\n{{/flow.instances}}\n</ul>\n      ",
+        "template": "<ul>\n{{#flow.instances}}\n  <img src=\"data:image/png;base64, {{path}}\" />\n{{/flow.instances}}\n</ul>\n      ",
         "output": "str",
         "x": 350,
         "y": 220,
@@ -272,5 +272,75 @@
         "x": 770,
         "y": 200,
         "wires": []
+    },
+    {
+        "id": "ddfba632.207e58",
+        "type": "switch",
+        "z": "53aac241.0d72f4",
+        "name": "",
+        "property": "role",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "instance",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 120,
+        "wires": [
+            [
+                "d08b17fd.8d556"
+            ]
+        ]
+    },
+    {
+        "id": "233a5b0b.1f446c",
+        "type": "inject",
+        "z": "53aac241.0d72f4",
+        "name": "",
+        "topic": "",
+        "payload": "$(ROLE)",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 220,
+        "y": 60,
+        "wires": [
+            [
+                "5a9496c4.320f48"
+            ]
+        ]
+    },
+    {
+        "id": "5a9496c4.320f48",
+        "type": "change",
+        "z": "53aac241.0d72f4",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "role",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 60,
+        "wires": [
+            []
+        ]
     }
 ]
