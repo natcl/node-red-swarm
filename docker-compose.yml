@@ -7,7 +7,7 @@ services:
     environment:
       - ROLE=manager
     volumes:
-      - /data:./data
+      - ./data:/data
 
   node-red-instance:
     image: nodered/node-red-docker
@@ -16,7 +16,7 @@ services:
     environment:
       - ROLE=instance
     volumes:
-      - /data:./data
+      - ./data:/data
     deploy:
       mode: replicated
       replicas: 6

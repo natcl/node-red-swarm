@@ -3,6 +3,8 @@
 *json.backup*
 *lock*
 
+.DS_Store
+
 # Logs
 logs
 *.log
