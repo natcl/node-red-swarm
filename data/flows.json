@@ -46,7 +46,8 @@
         "y": 140,
         "wires": [
             [
-                "12a79661.0f9a22"
+                "12a79661.0f9a22",
+                "a73bf4b.8686308"
             ]
         ]
     },
@@ -55,13 +56,13 @@
         "type": "debug",
         "z": "525869ac.9121e",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
         "complete": "false",
-        "x": 380,
-        "y": 140,
+        "x": 370,
+        "y": 80,
         "wires": []
     },
     {
@@ -72,7 +73,7 @@
         "topic": "$(INSTANCE_TOPIC)",
         "payload": "",
         "payloadType": "date",
-        "repeat": "1",
+        "repeat": "5",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
@@ -80,7 +81,7 @@
         "y": 120,
         "wires": [
             [
-                "b2a09e7d.2a32e"
+                "d08b17fd.8d556"
             ]
         ]
     },
@@ -93,8 +94,183 @@
         "qos": "",
         "retain": "",
         "broker": "ba3ba5c7.caf388",
-        "x": 520,
+        "x": 850,
         "y": 120,
+        "wires": []
+    },
+    {
+        "id": "a73bf4b.8686308",
+        "type": "join",
+        "z": "525869ac.9121e",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": true,
+        "timeout": "",
+        "count": "1",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 370,
+        "y": 140,
+        "wires": [
+            [
+                "f315f389.4a9d3"
+            ]
+        ]
+    },
+    {
+        "id": "d08b17fd.8d556",
+        "type": "http request",
+        "z": "53aac241.0d72f4",
+        "name": "",
+        "method": "GET",
+        "ret": "bin",
+        "url": "http://thecatapi.com/api/images/get?format=src&type=gif",
+        "tls": "",
+        "x": 450,
+        "y": 120,
+        "wires": [
+            [
+                "3789e244.25ae06"
+            ]
+        ]
+    },
+    {
+        "id": "3789e244.25ae06",
+        "type": "function",
+        "z": "53aac241.0d72f4",
+        "name": "",
+        "func": "msg.payload = msg.payload.toString('base64');\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 610,
+        "y": 120,
+        "wires": [
+            [
+                "b2a09e7d.2a32e"
+            ]
+        ]
+    },
+    {
+        "id": "15b8c83d.ece0c",
+        "type": "template",
+        "z": "525869ac.9121e",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<ul>\n{{#flow.instances}}\n  <li>{{path}}</li>\n  <img src=\"data:image/png;base64, {{path}}\" />\n{{/flow.instances}}\n</ul>\n      ",
+        "output": "str",
+        "x": 350,
+        "y": 220,
+        "wires": [
+            [
+                "58969d58.80ea44"
+            ]
+        ]
+    },
+    {
+        "id": "a1fbd2d.5b94a3",
+        "type": "http in",
+        "z": "525869ac.9121e",
+        "name": "",
+        "url": "/cats",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 220,
+        "wires": [
+            [
+                "15b8c83d.ece0c"
+            ]
+        ]
+    },
+    {
+        "id": "58969d58.80ea44",
+        "type": "http response",
+        "z": "525869ac.9121e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 470,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "a1cb388a.58e798",
+        "type": "change",
+        "z": "525869ac.9121e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "instances",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 790,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f315f389.4a9d3",
+        "type": "change",
+        "z": "525869ac.9121e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$each(payload, function($v, $k) {{\"path\": $v}})",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 140,
+        "wires": [
+            [
+                "363025f8.341f3a",
+                "a1cb388a.58e798"
+            ]
+        ]
+    },
+    {
+        "id": "363025f8.341f3a",
+        "type": "debug",
+        "z": "525869ac.9121e",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 770,
+        "y": 200,
         "wires": []
     }
 ]
