@@ -1,3 +1,8 @@
+# Node-RED
+.config.json
+*json.backup*
+*lock*
+
 # Logs
 logs
 *.log
@@ -56,4 +61,3 @@ typings/
 
 # dotenv environment variables file
 .env
-

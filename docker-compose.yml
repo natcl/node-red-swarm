@@ -1,0 +1,25 @@
+version: '3'
+services:
+  node-red-manager:
+    image: nodered/node-red-docker
+    ports:
+      - 1880:1880
+    environment:
+      - ROLE=manager
+    volumes:
+      - /data:./data
+
+  node-red-instance:
+    image: nodered/node-red-docker
+    ports:
+      - 30000:1880
+    environment:
+      - ROLE=instance
+    volumes:
+      - /data:./data
+    deploy:
+      mode: replicated
+      replicas: 6
+
+  mosquitto:
+    image: ansi/mosquitto
